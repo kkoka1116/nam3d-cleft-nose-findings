@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Measuring the Cleft Nose</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="privacy">Research summary for clinicians · patient photos stay on this computer · not yet clinically validated</div>
+
+<header class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Nasoalveolar molding (NAM) outcomes research</p>
+    <h1>Measuring the cleft nose from <em>clinic photos</em>: what works today</h1>
+    <p class="lede">Nasal symmetry is a key outcome of NAM, but it is usually judged from ordinary clinic photographs taken at different distances and angles. We asked whether new AI tools can turn those photos into accurate 3D noses, and how to measure reliably in the meantime.</p>
+    <div class="takeaways">
+      <div><b>1</b><p><strong>Measure in 2D, on the right view.</strong> Nostril width from the frontal photo; nostril height and area from a steep view from below. That gave about 4–7% error in our tests.</p></div>
+      <div><b>2</b><p><strong>Use full-resolution photos.</strong> Collage exports are too small: a perfectly symmetric nose can appear 13–36% asymmetric.</p></div>
+      <div><b>3</b><p><strong>AI 3D is promising but not ready to measure.</strong> The best model (MoGe-2) recovers nose shape to about 1 mm, but its measurements did not beat careful 2D.</p></div>
+    </div>
+  </div>
+  <div class="hero-viewer"><canvas id="hero-canvas"></canvas><div class="caption" id="hero-caption">A clinic photo becoming a 3D surface (MoGe-2)</div></div>
+</header>
+
+<main>
+<section id="why">
+  <div class="split">
+    <div>
+      <p class="kicker">Why this matters</p>
+      <h2>Photos can create change that isn't there</h2>
+      <p>When we compare a baby's nose before and after NAM, we want differences to come from treatment, not from how the photo was taken. A slightly turned head, a lower camera, or a cropped image can shift a nostril ratio by more than the treatment effect.</p>
+      <p>3D geometry would remove that problem, because a 3D nose can be measured from any angle. The question was whether AI can recover reliable 3D from the photos clinics already have.</p>
+    </div>
+    <div class="callout">
+      <h3>The measurements we focused on</h3>
+      <ul>
+        <li><b>Nostril width ratio</b>: cleft side ÷ non-cleft side</li>
+        <li><b>Nostril height ratio</b>: cleft ÷ non-cleft</li>
+        <li><b>Nostril area ratio</b>: cleft ÷ non-cleft</li>
+        <li>Supporting: alar base position, columella deviation, nasal tip position</li>
+      </ul>
+      <p class="note">Ratios need no ruler or penny, so they suit retrospective photos without calibration.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tested">
+  <p class="kicker">What we did</p>
+  <h2>Testing AI where the right answer is known</h2>
+  <p class="wide">You can only judge a measurement tool against a known truth, which real clinic photos don't provide. So we tested on faces whose exact 3D shape we know, then looked at real clinic photos.</p>
+  <ol class="timeline">
+    <li><span>1</span><h3>Computer-generated infant faces</h3><p>Virtual infant faces with real nostril openings and adjustable cleft asymmetry, including perfectly symmetric controls. 231 test runs.</p></li>
+    <li><span>2</span><h3>Real cleft anatomy</h3><p>Three public-domain NIH infant cleft-lip models (right, left and bilateral), photographed virtually from clinic-style angles. 72 test runs.</p></li>
+    <li><span>3</span><h3>Seven AI models compared</h3><p>Each model rebuilt the nose in 3D from the same photos; we scored how far its nose was from the true one.</p></li>
+    <li><span>4</span><h3>2D vs 3D measurement</h3><p>We simulated a clinician marking landmarks (with realistic small click errors) and compared measuring on the photo vs on the AI's 3D nose.</p></li>
+    <li><span>5</span><h3>Your clinic photos</h3><p>Seven collage sheets were split into 40 photos and run through the best model, to show what real photos yield.</p></li>
+  </ol>
+</section>
+
+<section id="protocol" class="feature">
+  <p class="kicker">Best use case today</p>
+  <h2>A measurement protocol clinics can adopt now</h2>
+  <p class="wide">The most useful result is not an AI model but a clear answer to "which photo should I measure each ratio on, and how good must the photo be?" Every number below comes from our tests, where the true answer was known.</p>
+  <div class="protocol">
+    <div class="steps">
+      <div class="step"><b>1</b><div><h3>Take two full-resolution photos</h3><p>A straight <strong>frontal</strong> view with the camera level with the nose, and a <strong>steep view from below</strong> (head tilted back ~55°) with both nostrils fully open to the camera.</p></div></div>
+      <div class="step"><b>2</b><div><h3>Measure each ratio on its best view</h3><p><strong>Width</strong> on the frontal photo. <strong>Height</strong> and <strong>area</strong> on the view from below. Avoid three-quarter and profile views for these ratios.</p></div></div>
+      <div class="step"><b>3</b><div><h3>Check the photo is big enough</h3><p>The face should span at least ~550 pixels, so each nostril is about 30 pixels across. Smaller images add error that no software can remove.</p></div></div>
+      <div class="step"><b>4</b><div><h3>Use AI 3D as a visual aid</h3><p>MoGe-2 surfaces help you see nasal shape and spot problem photos. Don't take millimetre readings from them yet.</p></div></div>
+    </div>
+    <figure class="protocol-table">
+      <figcaption>Ratio error when measured in 2D on each photo view</figcaption>
+      <div id="protocol-table"></div>
+      <p class="note">Green is best, red is avoid. Error is how far the measured ratio is from the truth on average. Simulated clicks with realistic error on full-resolution photos; computer-generated infant faces.</p>
+    </figure>
+  </div>
+  <div class="checklist">
+    <h3>Photo checklist</h3>
+    <ul>
+      <li>Send or keep the <b>original camera files</b>, not collage exports</li>
+      <li>Nose and nostrils <b>free of tape</b> and appliances when possible</li>
+      <li>Frontal: camera <b>level with the nose</b>, head not turned</li>
+      <li>From below: nostrils <b>fully visible</b>, a consistent tilt between visits</li>
+      <li>If using a coin for scale, hold it <b>at the nostrils' depth</b>, flat to the camera</li>
+      <li>Same views at <b>every visit</b>, so changes reflect treatment</li>
+    </ul>
+  </div>
+</section>
+
+<section id="resolution">
+  <div class="split reverse">
+    <div class="chart" id="chart-resolution"></div>
+    <div>
+      <p class="kicker">Finding: photo size</p>
+      <h2>Collage exports are too small to measure</h2>
+      <p>In the collage sheets clinics send, the face is only 120–300 pixels wide, so a nostril is 7–17 pixels. At that size, a one-to-two pixel uncertainty when marking an edge produces 14–38% error in the width ratio, and a perfectly symmetric nose can appear 13–36% asymmetric. Requesting original full-resolution photos is the simplest, biggest improvement.</p>
+    </div>
+  </div>
+</section>
+
+<section id="models">
+  <p class="kicker">Finding: AI 3D reconstruction</p>
+  <h2>One AI model rebuilds the nose far better than the rest</h2>
+  <p class="wide">We measured how far each model's 3D nose surface was from the true shape, and how wrong the tilt of its surface was. MoGe-2 (Microsoft) was clearly best: about 1 mm of shape error and 9–14° of tilt error, roughly half that of Depth Anything 3, the model this project started with. Most models flattened or shifted the nose by several millimetres, a lot for a nostril about 5 mm across.</p>
+  <div class="legend" id="legend-exp"></div>
+  <div class="grid2">
+    <figure><figcaption>Nose shape error (mm, lower is better)</figcaption><div class="chart" id="chart-shape"></div></figure>
+    <figure><figcaption>Nose surface tilt error (degrees, lower is better)</figcaption><div class="chart" id="chart-tilt"></div></figure>
+  </div>
+  <details class="more"><summary>How far each model shifted the whole nose</summary><div class="chart" id="chart-flatten"></div>
+    <p class="note">Shift along the camera's line of sight. On the real cleft models MoGe-2 was within about 1 mm; Depth Pro was about 14 mm off because it misjudged the camera's lens.</p></details>
+</section>
+
+<section id="truth" class="dark">
+  <p class="kicker">See for yourself</p>
+  <h2>How close is AI to a real cleft nose?</h2>
+  <p class="wide">Pick a cleft model and camera angle. Compare the true nose with what MoGe-2 and Depth Anything 3 reconstructed from a single photo. Warmer colours show where the AI's nose shape is wrong; white means accurate.</p>
+  <div class="truth-layout">
+    <div class="viewer tall"><canvas id="truth-canvas"></canvas>
+      <div class="viewer-ui"><div class="seg" id="truth-mode"></div><div class="colorbar"><span>0</span><i></i><span>5 mm error</span></div></div>
+    </div>
+    <aside>
+      <label class="field">Cleft model and photo angle<select id="truth-select"></select></label>
+      <img id="truth-photo" alt="The photograph the AI was given">
+      <table class="stats-table" id="truth-stats"></table>
+      <p class="note">"Shape error" ignores a small overall shift; "offset" is that shift (positive means the nose came out too flat). Across all 12 views MoGe-2 had lower shape error in 10 and lower tilt error in all 12.</p>
+    </aside>
+  </div>
+</section>
+
+<section id="ratios">
+  <div class="split">
+    <div>
+      <p class="kicker">Finding: 2D vs 3D measurement</p>
+      <h2>For nostril ratios, careful 2D is as good as AI 3D</h2>
+      <p>Measured on the right view, plain 2D matched or beat measurements taken from every AI model's 3D nose. MoGe-2's 3D tied 2D on the views from below, but on an angled (20°) photo it was the worst method tested. So AI 3D doesn't yet improve the main ratios.</p>
+      <p class="note">Average ratio error; computer-generated infant faces; 6 faces, 200 simulated markings each.</p>
+    </div>
+    <div class="chart" id="chart-ratios"></div>
+  </div>
+</section>
+
+<section id="clinic">
+  <p class="kicker">Your clinic photos</p>
+  <h2>Each photo becomes its own 3D surface</h2>
+  <p class="wide">MoGe-2 rebuilt the part of the face each photo sees. Drag the slider to lift the photo into 3D, rotate with the mouse, and switch to <em>clay shading</em> to judge shape without skin colour. On views from below, nostril openings, the columella and the cleft are clearly modelled.</p>
+  <div class="clinic-layout">
+    <div class="viewer tall"><canvas id="clinic-canvas"></canvas>
+      <div class="viewer-ui"><label class="morph">Photo <input type="range" id="morph" min="0" max="1" step="0.01" value="1"> 3D</label><div class="seg" id="clinic-mode"></div></div>
+      <div class="measure-hint" id="measure-hint"></div>
+    </div>
+    <aside><div class="filters" id="filters"></div><div class="thumbs" id="thumbs"></div></aside>
+  </div>
+  <div class="measure-panel">
+    <div>
+      <h3>Try measuring on the surface</h3>
+      <p>Choose a measurement and click its two endpoints on the 3D surface. Ratios (cleft ÷ non-cleft) are calculated automatically.</p>
+      <div class="seg" id="measure-mode"></div>
+      <button id="measure-clear" class="ghost">Clear</button>
+    </div>
+    <table class="stats-table" id="measure-table"></table>
+    <p class="warn"><b>For exploration only.</b> The AI's sense of size is unreliable on cropped clinic photos: it placed these faces 0.5–1.3 m from the camera. Millimetre values are illustrative, and even the ratios are not yet validated on real infants.</p>
+  </div>
+</section>
+
+<section id="merge">
+  <div class="split">
+    <div>
+      <p class="kicker">Why we don't combine the photos</p>
+      <h2>Different moments, different faces</h2>
+      <p>A full 3D face would need the photos to be combined. Our checks accepted <b>0 of 125</b> attempts. Even virtual photos taken at the same instant of a still face didn't line up well enough. Clinic photos add a bigger problem: they are taken seconds apart while the baby moves, cries and is re-taped, so the face itself changes between shots.</p>
+      <p>Two surfaces from the same visit are shown here side by side, not forced together.</p>
+    </div>
+    <div class="pair"><div class="viewer"><canvas id="pair-a"></canvas><div class="caption" id="pair-a-cap"></div></div><div class="viewer"><canvas id="pair-b"></canvas><div class="caption" id="pair-b-cap"></div></div></div>
+  </div>
+</section>
+
+<section id="truedepth" class="feature">
+  <p class="kicker">Next: the build in progress</p>
+  <h2>Instant measured 3D with the iPhone's Face ID camera</h2>
+  <p class="wide">AI can only <em>guess</em> depth from a flat photo. The iPhone's front TrueDepth camera, the one used for Face ID, <em>measures</em> it: it projects an invisible dot pattern and reads how the dots land on the face. Each depth frame takes about 1/30 of a second, fast enough to freeze a moving baby. We are building a small capture app that records a TrueDepth depth map and the matching front-camera photo together.</p>
+  <div class="td-grid">
+    <figure class="td-table">
+      <figcaption>How the options compare for an infant nose</figcaption>
+      <table class="stats-table cmp">
+        <tr><th></th><th>3D depth</th><th>Nose detail</th><th>Freezes motion</th><th>Cost</th></tr>
+        <tr><td>Clinic DSLR photo</td><td class="no">None (2D)</td><td>Excellent in 2D</td><td class="yes">Yes</td><td>Existing</td></tr>
+        <tr><td>AI from photo (MoGe-2)</td><td class="mid">Guessed</td><td>~1–1.5 mm shape error</td><td class="yes">Yes</td><td>Free</td></tr>
+        <tr class="hl"><td><b>iPhone TrueDepth (front)</b></td><td class="yes">Measured</td><td>Sub-millimetre expected*</td><td class="yes">Yes (1/30 s)</td><td>Phone</td></tr>
+        <tr><td>iPhone LiDAR (rear)</td><td class="yes">Measured</td><td class="no">Too coarse for nostrils</td><td class="yes">Yes</td><td>Phone</td></tr>
+        <tr><td>Phone 360° head scan</td><td class="yes">Measured</td><td>Good if still</td><td class="no">No (10–20 s)</td><td>Phone</td></tr>
+        <tr><td>Clinical 3D camera (3dMD/Vectra)</td><td class="yes">Measured</td><td>Reference standard</td><td class="yes">Yes (~2 ms)</td><td>High</td></tr>
+      </table>
+      <p class="note">*To be confirmed on infants; nostril interiors may drop out. Typical published figures, not our measurements.</p>
+    </figure>
+    <figure>
+      <figcaption>How long each capture takes (seconds, log scale)</figcaption>
+      <div class="chart" id="chart-speed"></div>
+    </figure>
+  </div>
+
+  <h3 class="sub">What a TrueDepth capture could look like</h3>
+  <p class="wide">A <b>simulated preview</b> built from a real NIH cleft model's true surface, with assumed sensor behaviour: a depth sample about every 0.6 mm, 0.5 mm noise, and no reading where the surface turns steeply away. A single frame looks rough, so the app captures a 1-second burst: <b>averaging ten frames</b> gives a smooth surface from measured data alone. <b>Fusing with MoGe-2</b> keeps TrueDepth's true shape and scale, borrows only MoGe-2's fine smooth detail, and fills the small gaps; filled areas are shown in <span class="blue">blue</span> because their shape is AI-estimated. Colour elsewhere shows shape error on the same scale as above.</p>
+  <div class="td-compare">
+    <div class="viewer"><canvas id="td-a"></canvas><div class="caption">AI guess from a photo (MoGe-2)</div></div>
+    <div class="viewer"><canvas id="td-b"></canvas><div class="caption" id="td-b-cap">TrueDepth (simulated preview)</div><div class="viewer-ui"><span></span><div class="seg" id="td-mode"></div></div></div>
+  </div>
+  <div class="td-controls"><label class="field">Cleft model and angle<select id="td-select"></select></label><table class="stats-table" id="td-stats"></table></div>
+
+  <h3 class="sub">The capture protocol we are building</h3>
+  <div class="steps four">
+    <div class="step"><b>1</b><div><h3>Front burst</h3><p>Phone ~30 cm from the face; one tap records ~1 second of paired depth and photo frames. Sound and vibration cues, since the screen faces the baby.</p></div></div>
+    <div class="step"><b>2</b><div><h3>From-below burst</h3><p>Head tilted back so both nostrils face the phone; another 1-second burst. The sharpest frame of each view is kept.</p></div></div>
+    <div class="step"><b>3</b><div><h3>Measure in true 3D</h3><p>Real millimetres and real head angle: angle-corrected nostril ratios, tip projection and columella shape, with no AI guessing of depth.</p></div></div>
+    <div class="step"><b>4</b><div><h3>Validate, then use</h3><p>Pilot on adult volunteers, then (with IRB approval) infants, compared with 2D protocol measurements and a clinical 3D camera.</p></div></div>
+  </div>
+  <p class="warn"><b>Important:</b> generic iPhone "face scan" features fit a smooth average adult face template, which would erase cleft anatomy. The app saves the camera's raw depth instead. Use on infants requires ethics approval; the projector is the same eye-safe system used by Face ID.</p>
+</section>
+
+<section id="readiness">
+  <p class="kicker">Summary</p>
+  <h2>What is ready, and what isn't</h2>
+  <div class="ready">
+    <div class="ready-col ok"><h3>Ready to use</h3><ul><li>Nostril width ratio on full-resolution frontal photos</li><li>Nostril height and area ratios on steep views from below</li><li>The photo checklist and minimum photo size</li></ul></div>
+    <div class="ready-col maybe"><h3>Promising, needs validation</h3><ul><li>MoGe-2 3D surfaces as a visual reference</li><li>Automatic landmark placement to reduce marking error</li><li>Correcting measurements for head angle; our first quick attempt did not work</li><li>iPhone TrueDepth capture: app being built, pilot next</li></ul></div>
+    <div class="ready-col no"><h3>Not ready</h3><ul><li>Millimetre measurements from AI 3D</li><li>Combining several clinic photos into one 3D face</li><li>Measuring from collage-sized images</li></ul></div>
+  </div>
+</section>
+
+<section id="next">
+  <h2>Next steps, and how clinics can help</h2>
+  <div class="cards">
+    <div class="card"><h3>Share original photos</h3><p>Full-resolution camera files, de-identified, with the same frontal and from-below views at each visit.</p></div>
+    <div class="card"><h3>Add a quick 3D scan</h3><p>A few seconds of 3D capture at some visits (a TrueDepth burst from our app, or 3dMD/Vectra), alongside the usual photos. Even 30–50 infants would let us validate AI measurements on real babies.</p></div>
+    <div class="card"><h3>Mark landmarks</h3><p>Clinician landmark markings on a set of photos let us train automatic landmark placement and measure how consistent human marking is.</p></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <h2>Glossary</h2>
+  <dl class="glossary">
+    <dt>Ratio (cleft ÷ non-cleft)</dt><dd>A measurement on the cleft side divided by the same measurement on the other side. 1.0 means symmetric.</dd>
+    <dt>View from below</dt><dd>Basal or submental photo with the head tilted back so both nostrils face the camera.</dd>
+    <dt>Ground truth</dt><dd>The exact, known shape we compare against, available only for computer-generated and model faces.</dd>
+    <dt>Depth Anything 3, MoGe-2, Depth Pro, Sapiens</dt><dd>AI models that estimate 3D shape from ordinary photos, by ByteDance, Microsoft, Apple and Meta.</dd>
+    <dt>Shape error</dt><dd>How far the AI's nose surface is from the true surface, in mm, after allowing for a small overall shift.</dd>
+    <dt>Tilt error</dt><dd>How wrongly the AI estimates which way each part of the nose surface faces, in degrees.</dd>
+  </dl>
+  <p class="note">Limits: computer-generated faces with synthetic skin texture; three teaching models rather than patient scans; simulated landmark marking; no infant photos with matching 3D scans yet. Nothing here is clinical validation.</p>
+</section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
