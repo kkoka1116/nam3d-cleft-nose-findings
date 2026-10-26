@@ -245,3 +245,10 @@ for(const [cid,id] of [['pair-a','sheet_03__p01'],['pair-b','sheet_03__p04']]){
   }
   ts.onchange=showTD; await showTD();
 }
+
+// ---------- simulated photo-coach screens ----------
+fetch('coach/coach_sim.json').then(r=>r.json()).then(rows=>{
+  const el=document.getElementById('coach-strip'); if(!el) return;
+  el.innerHTML=rows.map((r,i)=>`<figure class="coach-shot"><img src="coach/${r.image}" alt="${r.caption}" loading="lazy">
+    <figcaption><b>${i+1}.</b> ${r.caption}</figcaption></figure>`).join('');
+}).catch(()=>{});

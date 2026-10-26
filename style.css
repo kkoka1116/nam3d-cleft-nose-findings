@@ -131,3 +131,14 @@ h3.sub{font-size:1.35rem;margin-top:2.4rem}
 
 .blue{color:#2a78d6;font-weight:600}
 .td-compare .viewer-ui{justify-content:flex-end}
+
+/* simulated photo coach */
+.coach-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,260px);gap:1rem;overflow-x:auto;padding:.5rem .2rem 1rem;margin-top:1rem;scroll-snap-type:x mandatory}
+.coach-shot{margin:0;scroll-snap-align:start}
+.coach-shot img{width:100%;border-radius:28px;border:6px solid #1d1c1a;box-shadow:var(--shadow);display:block;background:#000}
+.coach-shot figcaption{font-size:.85rem;color:var(--ink-2);margin-top:.6rem}
+.coach-finding{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0 1.5rem}
+.coach-finding>div{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:1.2rem 1.4rem}
+.coach-finding>div:first-child h3:before{content:"✓ ";color:#1baf7a} .coach-finding>div:last-child h3:before{content:"! ";color:#d0472b}
+.coach-finding p{margin:0;font-size:.92rem}
+@media (max-width:980px){.coach-finding{grid-template-columns:1fr}}

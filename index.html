@@ -211,6 +211,14 @@
   </div>
   <div class="td-controls"><label class="field">Cleft model and angle<select id="td-select"></select></label><table class="stats-table" id="td-stats"></table></div>
 
+  <h3 class="sub">Simulated: the app's photo coach</h3>
+  <p class="wide">The app guides the person holding the phone into each view and fires the 1-second burst automatically once the face is in position and still. These screens are <b>simulated</b>: we rendered what the front camera would see of an NIH infant cleft model (frontal views) and our closed-head synthetic face (views from below), then ran the app's own positioning logic on that simulated depth. Every number and prompt below is what the logic produced, not drawn by hand.</p>
+  <div class="coach-strip" id="coach-strip"></div>
+  <div class="coach-finding">
+    <div><h3>Frontal guidance works</h3><p>Distance, centring and head turn were read correctly, and the coach reached READY in position. Head turn reads slightly low (13° for a true 20°), which still gives a sensible ±10° gate.</p></div>
+    <div><h3>From-below guidance needs calibration</h3><p>At the target 55° head tilt the coach read about 37° and kept asking for more tilt; its nostril check also missed, because the estimated nose tip shifts at steep angles. We will calibrate both from the first real pilot captures before any use with infants.</p></div>
+  </div>
+
   <h3 class="sub">The capture protocol we are building</h3>
   <div class="steps four">
     <div class="step"><b>1</b><div><h3>Front burst</h3><p>Phone ~30 cm from the face; one tap records ~1 second of paired depth and photo frames. Sound and vibration cues, since the screen faces the baby.</p></div></div>

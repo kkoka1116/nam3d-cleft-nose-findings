@@ -1,0 +1,243 @@
+[
+ {
+  "name": "1_frontal_too_far",
+  "caption": "Frontal view, phone too far away",
+  "model": "nih",
+  "view": "frontal",
+  "true_yaw": 0,
+  "true_tilt": 0,
+  "true_distance_m": 0.66,
+  "app_yaw": -1.6270501949037823,
+  "app_pitch": 3.993968400153176,
+  "app_distance_cm": 60.71726611982784,
+  "nostrils": null,
+  "ready": false,
+  "prompt": "Move phone closer",
+  "checks": [
+   {
+    "name": "distance",
+    "ok": false,
+    "value": "61 cm",
+    "target": "25\u201340 cm"
+   },
+   {
+    "name": "centred",
+    "ok": true,
+    "value": "+1%, +3%",
+    "target": "\u00b115%"
+   },
+   {
+    "name": "yaw",
+    "ok": true,
+    "value": "-2\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   },
+   {
+    "name": "pitch",
+    "ok": true,
+    "value": "+4\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   }
+  ],
+  "image": "1_frontal_too_far.png"
+ },
+ {
+  "name": "2_frontal_turned",
+  "caption": "Frontal view, head turned 20\u00b0",
+  "model": "nih",
+  "view": "frontal",
+  "true_yaw": 20,
+  "true_tilt": 0,
+  "true_distance_m": 0.36,
+  "app_yaw": -13.157840667650273,
+  "app_pitch": 3.4322234175380686,
+  "app_distance_cm": 30.778026625671238,
+  "nostrils": null,
+  "ready": false,
+  "prompt": "Turn to face the camera",
+  "checks": [
+   {
+    "name": "distance",
+    "ok": true,
+    "value": "31 cm",
+    "target": "25\u201340 cm"
+   },
+   {
+    "name": "centred",
+    "ok": true,
+    "value": "+7%, +5%",
+    "target": "\u00b115%"
+   },
+   {
+    "name": "yaw",
+    "ok": false,
+    "value": "-13\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   },
+   {
+    "name": "pitch",
+    "ok": true,
+    "value": "+3\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   }
+  ],
+  "image": "2_frontal_turned.png"
+ },
+ {
+  "name": "3_frontal_ready",
+  "caption": "Frontal view in position: READY, auto-capture fires when still",
+  "model": "nih",
+  "view": "frontal",
+  "true_yaw": 0,
+  "true_tilt": 0,
+  "true_distance_m": 0.36,
+  "app_yaw": 0.05275950564639026,
+  "app_pitch": 3.5718788880003465,
+  "app_distance_cm": 30.70676622365962,
+  "nostrils": null,
+  "ready": true,
+  "prompt": null,
+  "checks": [
+   {
+    "name": "distance",
+    "ok": true,
+    "value": "31 cm",
+    "target": "25\u201340 cm"
+   },
+   {
+    "name": "centred",
+    "ok": true,
+    "value": "+1%, +5%",
+    "target": "\u00b115%"
+   },
+   {
+    "name": "yaw",
+    "ok": true,
+    "value": "+0\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   },
+   {
+    "name": "pitch",
+    "ok": true,
+    "value": "+4\u00b0 depth",
+    "target": "\u00b110\u00b0"
+   }
+  ],
+  "image": "3_frontal_ready.png"
+ },
+ {
+  "name": "4_below_not_enough",
+  "caption": "From below, head tilted back only 30\u00b0",
+  "model": "phantom",
+  "view": "below",
+  "true_yaw": 0,
+  "true_tilt": 30,
+  "true_distance_m": 0.36,
+  "app_yaw": 0.32278903098612216,
+  "app_pitch": 25.229532957034426,
+  "app_distance_cm": 32.959874344292764,
+  "nostrils": [
+   1,
+   1
+  ],
+  "ready": false,
+  "prompt": "Tilt head back",
+  "checks": [
+   {
+    "name": "distance",
+    "ok": true,
+    "value": "33 cm",
+    "target": "25\u201340 cm"
+   },
+   {
+    "name": "centred",
+    "ok": true,
+    "value": "-0%, -7%",
+    "target": "\u00b115%"
+   },
+   {
+    "name": "tilt back",
+    "ok": false,
+    "value": "+25\u00b0 depth",
+    "target": "45\u201365\u00b0 (aim 55\u00b0)"
+   },
+   {
+    "name": "yaw",
+    "ok": true,
+    "value": "+0\u00b0 depth",
+    "target": "\u00b115\u00b0"
+   },
+   {
+    "name": "nostrils",
+    "ok": false,
+    "value": "dark 1 holes 1",
+    "target": "both visible"
+   }
+  ],
+  "image": "4_below_not_enough.png"
+ },
+ {
+  "name": "5_below_target",
+  "caption": "From below at the target 55\u00b0 tilt: the coach still asks for more tilt (needs calibration)",
+  "model": "phantom",
+  "view": "below",
+  "true_yaw": 0,
+  "true_tilt": 55,
+  "true_distance_m": 0.36,
+  "app_yaw": 0.5511368806593554,
+  "app_pitch": 37.463686264287325,
+  "app_distance_cm": 32.79198762606473,
+  "nostrils": [
+   0,
+   0
+  ],
+  "ready": false,
+  "prompt": "Tilt head back",
+  "checks": [
+   {
+    "name": "distance",
+    "ok": true,
+    "value": "33 cm",
+    "target": "25\u201340 cm"
+   },
+   {
+    "name": "centred",
+    "ok": true,
+    "value": "-0%, -11%",
+    "target": "\u00b115%"
+   },
+   {
+    "name": "tilt back",
+    "ok": false,
+    "value": "+37\u00b0 depth",
+    "target": "45\u201365\u00b0 (aim 55\u00b0)"
+   },
+   {
+    "name": "yaw",
+    "ok": true,
+    "value": "+1\u00b0 depth",
+    "target": "\u00b115\u00b0"
+   },
+   {
+    "name": "nostrils",
+    "ok": false,
+    "value": "dark 0 holes 0",
+    "target": "both visible"
+   }
+  ],
+  "image": "5_below_target.png"
+ },
+ {
+  "name": "6_retake",
+  "caption": "After the burst: the baby turned during the second, so the app asks for a retake",
+  "model": "nih",
+  "view": "frontal",
+  "true_yaw": "0\u21928 during burst",
+  "app_still_frames": 24,
+  "app_pose_drift_deg": 6.2595107506394365,
+  "failures": [
+   "pose drift 6.3\u00b0 > 5.0\u00b0"
+  ],
+  "image": "6_retake.png"
+ }
+]
